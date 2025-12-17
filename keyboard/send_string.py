@@ -70,7 +70,8 @@ class BtkStringClient():
         element = self.state[2]
         for bit in element:
             bin_str += str(bit)
-        self.iface.send_keys(int(bin_str, 2), self.state[4:10])
+        keys = dbus.Array([dbus.Byte(x) for x in self.state[4:10]], signature='y')
+        self.iface.send_keys(int(bin_str, 2), keys)
 
     def send_key_down(self, scancode, modifiers):
         """sends a key down event to the server"""

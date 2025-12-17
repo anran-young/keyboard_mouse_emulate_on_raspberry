@@ -17,7 +17,7 @@ class MouseClient():
 		self.iface = dbus.Interface(self.btkservice, 'org.thanhle.btkbservice')
 	def send_current(self):
 		try:
-			self.iface.send_mouse(0, bytes(self.state))
+			self.iface.send_mouse(0, dbus.ByteArray(bytes(self.state)))
 		except OSError as err:
 			error(err)
 

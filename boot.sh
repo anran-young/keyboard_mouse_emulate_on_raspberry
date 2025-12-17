@@ -9,6 +9,9 @@ sudo /etc/init.d/bluetooth start
 #Get current Path
 export C_PATH=$(pwd)
 
+# Ensure old server instance is not still holding L2CAP PSMs
+sudo pkill -f 'server/btk_server.py' >/dev/null 2>&1 || true
+
 tmux kill-window -t thanhle:app >/dev/null 2>&1
 
 [ ! -z "$(tmux has-session -t thanhle 2>&1)" ] && tmux new-session -s thanhle -n app -d

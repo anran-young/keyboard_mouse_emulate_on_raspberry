@@ -13,8 +13,12 @@ import sys
 from select import select
 import pyudev
 import re
+import argparse
 
 logging.basicConfig(level=logging.DEBUG)
+
+
+SHOULD_GRAB = True
 
 
 class InputDevice():
@@ -66,7 +70,8 @@ class InputDevice():
     def __init__(self, device_node):
         self.device_node = device_node
         self.device = evdev.InputDevice(device_node)
-        self.device.grab()
+        if SHOULD_GRAB:
+            self.device.grab()
         info("Connected %s", self)
 
     def fileno(self):
@@ -94,7 +99,7 @@ class MouseInput(InputDevice):
 
     def send_current(self, ir):
         try:
-            self.iface.send_mouse(0, bytes(ir))
+            self.iface.send_mouse(0, dbus.ByteArray(bytes(ir)))
         except OSError as err:
             error(err)
 
@@ -139,6 +144,11 @@ class MouseInput(InputDevice):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Mouse client forwarding events to btkbservice")
+    parser.add_argument('--no-grab', action='store_true', help='Do not grab the local input device (keeps local mouse usable)')
+    args = parser.parse_args()
+    SHOULD_GRAB = not args.no_grab
+
     InputDevice.init()
     while True:
         desctiptors = [*InputDevice.inputs, InputDevice.monitor]

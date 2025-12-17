@@ -99,7 +99,8 @@ class Keyboard():
             bin_str += str(bit)
         a = self.state
         print(*a)
-        self.iface.send_keys(int(bin_str, 2), self.state[4:10])
+        keys = dbus.Array([dbus.Byte(x) for x in self.state[4:10]], signature='y')
+        self.iface.send_keys(int(bin_str, 2), keys)
 
 
 if __name__ == "__main__":
