@@ -23,11 +23,11 @@ from bluetooth import *
 logging.basicConfig(level=logging.DEBUG)
 
 # @todo fill your host mac here manually
-TARGET_ADDRESS = ""
+TARGET_ADDRESS = "4C:56:9D:84:E5:F7"
 
 class BTKbDevice():
     # change these constants
-    MY_ADDRESS = "B8:27:EB:C5:B3:27"
+    MY_ADDRESS = "88:A2:9E:3A:34:42"
     MY_DEV_NAME = "ThanhLe_Keyboard_Mouse"
 
     # define some constants
