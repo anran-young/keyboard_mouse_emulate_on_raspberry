@@ -28,8 +28,10 @@ BLUEZ_ADAPTER_PATH = "/org/bluez/hci0"
 
 logging.basicConfig(level=logging.DEBUG)
 
-# @todo fill your host mac here manually
-TARGET_ADDRESS = "88:A2:9E:3A:34:42"
+# Optional: fill your host MAC here if you *need* the pre-connect hack.
+# For iOS/iPadOS, the peer address may change/randomize, so leaving this empty
+# usually works better for pairing/re-pairing.
+TARGET_ADDRESS = ""
 
 
 class Rejected(dbus.DBusException):
@@ -319,15 +321,17 @@ class BTKbDevice():
     def listen(self):
         print("\033[0;33m7. Waiting for connections\033[0m")
 
-        # key point: use connect to get the host request for the accept() below
-        # it work, I just dont care for having been into it for 2days
-        self.setup_socket()
-        try:
-            # must be ahead of listen or 'File descriptor in bad state'
-            self.scontrol.connect((TARGET_ADDRESS, self.P_CTRL))
-        except socket.error as err:
-            # it was expect to failed
-            print("Connect failed: "+str(err))
+        # Historical workaround: on some hosts, initiating a connect could trigger
+        # the host to open the inbound channels we accept() below.
+        # Only attempt this when TARGET_ADDRESS is explicitly set.
+        if TARGET_ADDRESS:
+            self.setup_socket()
+            try:
+                # must be ahead of listen or 'File descriptor in bad state'
+                self.scontrol.connect((TARGET_ADDRESS, self.P_CTRL))
+            except socket.error as err:
+                # expected to fail in many cases
+                print("Connect failed: " + str(err))
 
         # this may not work
         # os.system("bluetoothctl connect " + TARGET_ADDRESS)
@@ -404,8 +408,7 @@ if __name__ == "__main__":
         if not os.geteuid() == 0:
             sys.exit("Only root can run this script")
 
-        if TARGET_ADDRESS == "":
-            sys.exit("Please fill your host mac address in line 26")
+        # TARGET_ADDRESS is optional; leaving it empty is recommended for iOS/iPadOS.
 
         DBusGMainLoop(set_as_default=True)
 

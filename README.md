@@ -11,7 +11,9 @@
 
 ## 第 2.1 步：添加你的主机 MAC 地址
 
-打开 `./server/btk_server.py`，把你主机的 MAC 地址填到第 26 行的 `TARGET_ADDRESS` 变量里。
+打开 `./server/btk_server.py`：
+- 如果你是 iPad/iPhone 作为主机：建议把 `TARGET_ADDRESS` 留空（iOS/iPadOS 可能会变化/随机化蓝牙地址，写死会导致再次配对/连接失败）。
+- 如果你是固定地址的主机且确实需要：再把主机的 MAC 地址填到 `TARGET_ADDRESS`。
 
 > 懒得写成脚本，所以需要你手动改。
 
