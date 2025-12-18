@@ -22,6 +22,27 @@ Go to `./server/btk_server.py`, fill your host's mac address to `TARGET_ADDRESS`
 sudo ./boot.sh
 ```
 
+### Pairing（自动确认）
+
+项目已在 `server/auto_pair_agent.py` 注册 BlueZ Agent，并在启动时设为 DefaultAgent：当 iPad 发起配对时会自动接受确认/授权，不再需要在树莓派端手动点击确认。
+
+- Agent 日志：`/tmp/auto_pair_agent.log`
+
+#### 如果 iPad 提示“配对不成功/忽略此设备”
+
+通常是旧的 Bond/密钥残留导致，需要两边都清理后重新配对：
+
+```bash
+# 树莓派端：列出已配对设备并删除对应 iPad
+sudo bluetoothctl paired-devices
+sudo bluetoothctl remove <IPAD_MAC>
+
+# 可选：重启蓝牙服务
+sudo systemctl restart bluetooth.service
+```
+
+然后在 iPad 蓝牙列表里点“忽略此设备”，再重新搜索并配对。
+
 
 ## Step 3.1: Run Keyboard Client (using physical keyboard)
 
