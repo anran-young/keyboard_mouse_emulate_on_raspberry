@@ -23,7 +23,7 @@ from bluetooth import *
 logging.basicConfig(level=logging.DEBUG)
 
 # @todo fill your host mac here manually
-TARGET_ADDRESS = "4C:56:9D:84:E5:F7"
+TARGET_ADDRESS = "88:A2:9E:3A:34:42"
 
 class BTKbDevice():
     # change these constants

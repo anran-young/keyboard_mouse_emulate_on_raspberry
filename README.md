@@ -1,28 +1,28 @@
 [![Build Status](https://travis-ci.com/quangthanh010290/keyboard_mouse_emulate_on_raspberry.svg?branch=master)](https://travis-ci.com/quangthanh010290/keyboard_mouse_emulate_on_raspberry)
 
-# Make things work first
+# 先把项目跑起来
 
-## Step 1: Setup
+## 第一步：安装依赖
 
 ```
  sudo ./setup.sh
 ```
 
 
-## Step 2.1: Add your host mac
+## 第二步（可选）：填写主机 MAC
 
-Go to `./server/btk_server.py`, fill your host's mac address to `TARGET_ADDRESS` variable at line 26
+打开 `./server/btk_server.py`，把你的主机（例如 iPad/电脑）的 MAC 地址填到 `TARGET_ADDRESS` 变量（原注释写在第 26 行附近）。
 
-> Lazy to write at scipt, so you need to change it manually
+> 原作者懒得做成脚本参数，所以需要你手动改。
 
 
-## Step 2.2: Run the Server
+## 第三步：启动服务端
 
 ```
 sudo ./boot.sh
 ```
 
-### Pairing（自动确认）
+### 配对（自动确认）
 
 项目已在 `server/auto_pair_agent.py` 注册 BlueZ Agent，并在启动时设为 DefaultAgent：当 iPad 发起配对时会自动接受确认/授权，不再需要在树莓派端手动点击确认。
 
@@ -44,43 +44,43 @@ sudo systemctl restart bluetooth.service
 然后在 iPad 蓝牙列表里点“忽略此设备”，再重新搜索并配对。
 
 
-## Step 3.1: Run Keyboard Client (using physical keyboard)
+## 第四步：运行键盘客户端（使用物理键盘）
 
-- Need a physical keyboard connected to raspberry PI board
+- 需要树莓派接入一个物理键盘
 
 ```
 ./keyboard/kb_client.py
 ```
 
-## Step 3.2: Run Keyboard Client (no need physical keyboard, send string through dbus)
+## 第五步：运行键盘客户端（无需物理键盘，通过 DBus 发送字符串）
 
-- Dont need a physical keyboard connected to raspberry PI board
+- 不需要树莓派接入物理键盘
 
 ```
 ./keyboard/send_string.py "hello client, I'm a keyboard"
 ```
 
-## Step 3.3: Run mouse client (using physical mouse)
+## 第六步：运行鼠标客户端（使用物理鼠标）
 
-- Need a physical mouse connected to raspberry PI board
+- 需要树莓派接入一个物理鼠标
 ```
 ./mouse/mouse_client.py
 ```
 
-## Step 3.4: Run Mouse client (no need physical mouse, string mouse data through dbus)
+## 第七步：运行鼠标客户端（无需物理鼠标，通过 DBus 发送鼠标数据）
 
-- Dont need a physical mouse connected to raspberry PI board
+- 不需要树莓派接入物理鼠标
 ```
 ./mouse/mouse_emulate.py 0 10 0 0
 ```
 
-# To understand what I'm doing in the background
-[Make Raspberry Pi3 as an emulator bluetooth keyboard](https://thanhle.me/make-raspberry-pi3-as-an-emulator-bluetooth-keyboard/)
+# 原理说明（项目做了什么）
+[将 Raspberry Pi3 模拟成蓝牙键盘](https://thanhle.me/make-raspberry-pi3-as-an-emulator-bluetooth-keyboard/)
 
-## Keyboard setup demo (old version)
+## 键盘演示（旧版本）
 
  [![ScreenShot](https://i0.wp.com/thanhle.me/wp-content/uploads/2020/02/bluetooth_mouse_emulate_on_ra%CC%81pberry.jpg)](https://www.youtube.com/watch?v=fFpIvjS4AXs)
 
-## Mouse setup demo (ongoing)
-[Emulate Bluetooth mouse with Raspberry Pi](https://thanhle.me/emulate-bluetooth-mouse-with-raspberry-pi/)
+## 鼠标演示（持续更新）
+[将 Raspberry Pi 模拟成蓝牙鼠标](https://thanhle.me/emulate-bluetooth-mouse-with-raspberry-pi/)
 [![ScreenShot](https://i0.wp.com/thanhle.me/wp-content/uploads/2020/08/bluetooth_mouse_emulation_on_raspberry.jpg)](https://www.youtube.com/watch?v=fFpIvjS4AXs)
